@@ -3,7 +3,7 @@
 
 	export let data;
 
-	const plans = data.plans;
+	const plans = data?.plans;
 </script>
 
 <section>

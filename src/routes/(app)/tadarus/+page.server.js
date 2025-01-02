@@ -8,7 +8,6 @@ const name = 'Alan Nuari'
 export const load = async () => {
     try {
         const plans = await db.select().from(table.plan).where(eq(table.plan.name, name));
-        console.log(plans)
         return { plans };
     } catch (error) {
         console.error('Error fetching data:', error);

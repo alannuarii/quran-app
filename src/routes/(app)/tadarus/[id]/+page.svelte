@@ -1,8 +1,14 @@
+<script>
+	export let data;
+
+	const plan = data?.plan;
+</script>
+
 <section>
 	<div class="card p-3 rounded-4">
 		<div class="row align-items-center mb-3">
 			<div class="col-8 col-md-10">
-				<h6>ID: <span class="fw-bold">oZmxBCCqTgrM688qbO3S</span></h6>
+				<h6>ID: <span class="fw-bold">{plan[0].id}</span></h6>
 			</div>
 			<div class="col-4 col-md-2">
 				<button class="btn btn-sm btn-success">Invite Link</button>
@@ -25,9 +31,9 @@
 				</div>
 				<div class="col-3 col-md-2 text-center"><h6 class="fw-bolder">100%</h6></div>
 			</div>
-            <hr>
-			<p>Target Khatam <span class="fw-bold">22 Januari 2025</span></p>
-            <p>Inisiator <span class="fw-bold">Alan Nuari</span></p>
+			<hr />
+			<p>Target Khatam <span class="fw-bold">{plan[0].targetKhatam}</span></p>
+			<p>Inisiator <span class="fw-bold">{plan[0].name}</span></p>
 		</div>
 	</div>
 </section>
@@ -35,7 +41,7 @@
 <style>
 	p {
 		margin: 0px;
-        font-size: 0.8em;
+		font-size: 0.8em;
 	}
 	h6 {
 		font-size: 0.9em;
