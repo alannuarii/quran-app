@@ -37,5 +37,6 @@
 	}
 	.content {
 		padding-top: 80px;
+		padding-bottom: 90px;
 	}
 </style>

@@ -10,7 +10,7 @@
 	<div class="card p-3 rounded-4 bg-light">
 		<div class="d-flex justify-content-between align-items-center">
 			<h3 class="text-center">Tadarus Al-Quran</h3>
-			<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
+			<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tadarus"
 				>Create</button
 			>
 			<Tadarus />

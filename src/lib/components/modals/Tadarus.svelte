@@ -7,7 +7,7 @@
 
 <div
 	class="modal fade"
-	id="exampleModal"
+	id="tadarus"
 	tabindex="-1"
 	aria-labelledby="exampleModalLabel"
 	aria-hidden="true"
