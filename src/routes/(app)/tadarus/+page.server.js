@@ -1,12 +1,14 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
+import { eq } from 'drizzle-orm';
 import * as table from '$lib/server/db/schema';
 
 const name = 'Alan Nuari'
 
 export const load = async () => {
     try {
-        const plans = await db.select().from(table.user);
+        const plans = await db.select().from(table.plan).where(eq(table.plan.name, name));
+        console.log(plans)
         return { plans };
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -21,7 +23,7 @@ export const actions = {
         const target = formData.get('target')
         const anggota = formData.get('anggota')
 
-        const name = 'ALan Nuari'
+        const name = 'Alan Nuari'
 
         try {
             await db.insert(table.plan).values({ id, name, targetKhatam: target, anggota: anggota });
