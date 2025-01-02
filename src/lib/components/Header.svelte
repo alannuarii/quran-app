@@ -8,7 +8,7 @@
 				height="24"
 				class="d-inline-block align-text-top"
 			/> -->
-			Jariah App
+			Jariyah App
 		</a>
 		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<button class="btn"><i class="bi-person-circle"></i></button>

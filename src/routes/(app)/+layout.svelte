@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Jariah App</title>
+	<title>Jariyah App</title>
 	<meta name="description" content="Project5" />
 </svelte:head>
 
