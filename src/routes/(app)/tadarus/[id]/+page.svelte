@@ -10,7 +10,7 @@
 
 <section>
 	<div class="card p-3 rounded-4">
-		<div class="row align-items-center mb-3">
+		<div class="row align-items-center mb-3 g-3">
 			<div class="col-8 col-md-10">
 				<div class="input-group flex-nowrap">
 					<span class="input-group-text fw-bold" id="addon-wrapping">ID</span>
@@ -26,8 +26,10 @@
 				</div>
 			</div>
 			<div class="col-4 col-md-2">
-				<button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#{plan[0].id}"
-					>Invite Link</button
+				<button
+					class="btn btn-sm btn-success w-100"
+					data-bs-toggle="modal"
+					data-bs-target="#id{plan[0].id}">Invite Link</button
 				>
 				<Share id={plan[0].id} />
 			</div>
@@ -47,7 +49,7 @@
 						<div class="progress-bar progress-bar-striped bg-success" style="width: 25%"></div>
 					</div>
 				</div>
-				<div class="col-3 col-md-2 text-center"><h6 class="fw-bolder">100%</h6></div>
+				<div class="col-3 col-md-2 text-center"><h6 class="fw-bolder">25%</h6></div>
 			</div>
 			<hr />
 			<div class="row">

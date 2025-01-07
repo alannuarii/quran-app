@@ -1,12 +1,17 @@
 import { pgTable, serial, text, integer, timestamp, date } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
-	id: text('id').primaryKey(),
-	username: text('username').notNull().unique(),
-	passwordHash: text('password_hash').notNull()
+	id: text('id').primaryKey(),          // ID unik untuk setiap pengguna
+	email: text('email').notNull().unique(),  // Email unik, wajib diisi
+	name: text('name').notNull(),             // Nama pengguna, wajib diisi
+	passwordHash: text('password_hash'),               // Kata sandi untuk autentikasi lokal
+	googleId: text('google_id').unique(),     // ID Google (unik, opsional)
+	createdAt: timestamp('created_at')        // Timestamp waktu pembuatan
+		.defaultNow()                           // Secara otomatis diisi waktu saat insert
+		.notNull(),
 });
 
-export const session = pgTable('session', {
+export const sessionLocal = pgTable('session_local', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()

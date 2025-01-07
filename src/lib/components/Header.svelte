@@ -1,3 +1,7 @@
+<!-- <script>
+	import Profile from './modals/Profile.svelte';
+</script> -->
+
 <nav class="navbar bg-body-tertiary px-md-4 px-2 border">
 	<div class="container-fluid">
 		<a class="navbar-brand fw-bolder" href="/">
@@ -11,7 +15,9 @@
 			Jariyah App
 		</a>
 		<!-- svelte-ignore a11y_consider_explicit_label -->
-		<button class="btn"><i class="bi-person-circle"></i></button>
+		<button class="btn" data-bs-toggle="modal" data-bs-target="#profile"
+			><i class="bi-person-circle"></i></button
+		>
 	</div>
 </nav>
 

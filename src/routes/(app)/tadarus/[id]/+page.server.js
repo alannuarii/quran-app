@@ -3,9 +3,9 @@ import { db } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import * as table from '$lib/server/db/schema';
 
-const name = 'Alan Nuari'
 
-export const load = async ({ url }) => {
+export const load = async ({ url}) => {
+
     const id = url.pathname.replace('/tadarus/', '')
     try {
         const plan = await db.select().from(table.plan).where(eq(table.plan.id, id));

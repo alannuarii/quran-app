@@ -1,11 +1,16 @@
 <script>
 	import Bottom from '$lib/components/Bottom.svelte';
 	import Header from '$lib/components/Header.svelte';
+	import Profile from '$lib/components/modals/Profile.svelte';
+
+	export let data;
+
+	const user = data?.user;
 </script>
 
 <svelte:head>
 	<title>Jariyah App</title>
-	<meta name="description" content="Project5" />
+	<meta name="description" content="Project7" />
 </svelte:head>
 
 <main>
@@ -17,11 +22,12 @@
 				</div>
 			</div>
 			<div class="content px-4">
-				<slot />
+				<slot {user} />
 			</div>
 			<Bottom />
 		</div>
 	</div>
+	<Profile {user} />
 </main>
 
 <style>

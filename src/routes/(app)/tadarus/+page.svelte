@@ -4,6 +4,7 @@
 	export let data;
 
 	const plans = data?.plans;
+	const name = data?.name;
 </script>
 
 <section>
@@ -13,12 +14,15 @@
 			<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tadarus"
 				>Create</button
 			>
-			<Tadarus />
+			<Tadarus {name} />
 		</div>
 	</div>
 	<hr />
 	{#each plans as plan}
-		<a href="/tadarus/{plan.id}" class="card p-3 mb-1 btn btn-outline-success text-dark bg-light rounded-4">
+		<a
+			href="/tadarus/{plan.id}"
+			class="card p-3 mb-1 btn btn-outline-success text-dark bg-light rounded-4"
+		>
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="text-center">
 					<p>Inisiator</p>

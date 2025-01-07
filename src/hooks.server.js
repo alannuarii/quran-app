@@ -1,24 +1,52 @@
-// import * as auth from '$lib/server/auth.js';
+import jwt from "jsonwebtoken";
 
-// const handleAuth = async ({ event, resolve }) => {
-// 	const sessionToken = event.cookies.get(auth.sessionCookieName);
-// 	if (!sessionToken) {
-// 		event.locals.user = null;
-// 		event.locals.session = null;
-// 		return resolve(event);
-// 	}
+const JWT_SECRET = "your_jwt_secret"; // Gunakan kunci rahasia yang kuat
 
-// 	const { session, user } = await auth.validateSessionToken(sessionToken);
-// 	if (session) {
-// 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-// 	} else {
-// 		auth.deleteSessionTokenCookie(event);
-// 	}
+export async function handle({ event, resolve }) {
+    const token = event.cookies.get("auth");
 
-// 	event.locals.user = user;
-// 	event.locals.session = session;
+    if (token) {
+        try {
+            // Verifikasi dan decode token JWT
+            const decodedToken = jwt.verify(token, JWT_SECRET);
 
-// 	return resolve(event);
-// };
+            // Simpan informasi pengguna di `locals` agar dapat diakses di seluruh aplikasi
+            event.locals.user = {
+                id: decodedToken.id,
+                name: decodedToken.name,
+                email: decodedToken.email,
+            };
+        } catch (error) {
+            console.error("Invalid or expired JWT:", error);
+            event.locals.user = null;
 
-// export const handle = handleAuth;
+            // Hapus cookie jika token tidak valid
+            event.cookies.delete("auth");
+        }
+    } else {
+        event.locals.user = null; // Jika tidak ada token, tidak ada data pengguna
+    }
+
+    // Izinkan akses ke halaman login, register, dan endpoint auth tanpa autentikasi
+    if (
+        !event.locals.user &&
+        event.url.pathname !== "/login" &&
+        event.url.pathname !== "/register" &&
+        !event.url.pathname.startsWith("/api/auth")
+    ) {
+        return new Response(null, {
+            status: 302,
+            headers: { Location: "/login" },
+        });
+    }
+
+    // Cegah pengguna yang sudah login mengakses halaman login dan register
+    if (event.locals.user && (event.url.pathname === "/login" || event.url.pathname === "/register")) {
+        return new Response(null, {
+            status: 302,
+            headers: { Location: "/" }, // Arahkan ke halaman utama
+        });
+    }
+
+    return resolve(event);
+}

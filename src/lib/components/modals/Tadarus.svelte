@@ -2,6 +2,8 @@
 	import { generateRandomCode } from '../../utils/random';
 	import { getNextWeekDate } from '../../utils/date';
 
+	export let name;
+
 	let jumlahAnggota = Array.from({ length: 30 }, (_, i) => i + 1);
 </script>
 
@@ -12,14 +14,13 @@
 	aria-labelledby="exampleModalLabel"
 	aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<form method="post">
-			<div class="modal-content rounded-4">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">Create Plan</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-					></button>
-				</div>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content rounded-4">
+			<div class="modal-header">
+				<h5 class="modal-title fw-bold" id="exampleModalLabel">Create Plan</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form method="post">
 				<div class="modal-body">
 					<div class="form-floating mb-3">
 						<input
@@ -61,10 +62,11 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<input type="hidden" name="name" value={name} />
 					<button type="submit" class="btn btn-success">Kirim</button>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
 </div>
 
