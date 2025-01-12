@@ -31,7 +31,7 @@
 
 <div
 	class="modal fade"
-	id="id{id}"
+	id="share{id}"
 	tabindex="-1"
 	aria-labelledby="exampleModalLabel"
 	aria-hidden="true"

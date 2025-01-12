@@ -27,7 +27,8 @@ export const actions = {
         const name = formData.get('name')
 
         try {
-            await db.insert(table.plan).values({ id, name, targetKhatam: target, anggota: anggota });
+            await db.insert(table.plan).values({ id, name, targetKhatam: target, anggota: anggota});
+            await db.insert(table.member).values({ name, planId: id });
 
             return {
                 message: 'Data inserted successfully', status: 'OK'
