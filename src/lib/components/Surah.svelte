@@ -6,13 +6,13 @@
 	};
 </script>
 
-<div class="card px-5 py-4 rounded-5">
+<div class="card px-md-5 px-3 py-4 rounded-5">
 	<div class="container">
 		<h3 class="text-center fw-bold mb-4">Surah An-Nas</h3>
 
 		{#each surah.data as ayah}
 			<div class="ayah mb-4">
-				<p class="ayah-text">
+				<p class="ayah-text fw-bold">
 					{ayah.aya_text}
 					<span class="ayah-number">({convertToArabicNumbers(ayah.aya_number)})</span>
 				</p>
@@ -34,6 +34,7 @@
 		font-size: 1.5rem;
 		direction: rtl; /* Teks dari kanan ke kiri */
 		text-align: right;
+		cursor: pointer;
 	}
 	.ayah-number {
 		font-size: 0.9em;
