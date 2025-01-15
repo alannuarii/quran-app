@@ -1,1 +1,7 @@
-<h1>tes quran</h1>
+<script>
+	import Surah from '$lib/components/Surah.svelte';
+</script>
+
+<section>
+	<Surah />
+</section>
