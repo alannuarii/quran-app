@@ -69,9 +69,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	/* .btn-close {
-		border: none;
-	} */
-</style>
