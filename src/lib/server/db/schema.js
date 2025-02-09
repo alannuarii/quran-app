@@ -13,7 +13,7 @@ export const plan = pgTable('plan', {
     id: text('id').notNull().primaryKey().unique(),
     name: text('name').notNull(),
     targetKhatam: date('target_khatam').notNull(),
-    anggota: integer('anggota').notNull(),
+    members: integer('members').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
@@ -26,7 +26,32 @@ export const member = pgTable('member', {
 
 export const tadarus = pgTable('tadarus', {
     id: uuid('id').defaultRandom().primaryKey(),
-    juz: integer('juz').notNull().unique(),
+    juz: integer('juz').notNull(),
+    memberId: uuid('member_id').notNull().references(() => member.id, { onDelete: 'cascade' }), // Add onDelete cascade here
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+// export const progress = pgTable('progress', {
+//     id: uuid('id').defaultRandom().primaryKey(),
+//     juz: integer('juz').notNull(),
+//     surah: integer('surah').notNull(),
+//     page: integer('page').notNull(),
+//     ayat: integer('ayat').notNull(),
+//     memberId: uuid('member_id').notNull().references(() => member.id, { onDelete: 'cascade' }), // Add onDelete cascade here
+//     createdAt: timestamp('created_at').defaultNow().notNull(),
+// });
+
+export const progress = pgTable('progress', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    startJuz: integer('start_juz').notNull(),
+    startSurah: integer('start_surah').notNull(),
+    startPage: integer('start_page').notNull(),
+    startAyat: integer('start_ayat').notNull(),
+    endJuz: integer('end_juz').notNull(),
+    endSurah: integer('end_surah').notNull(),
+    endPage: integer('end_page').notNull(),
+    endAyat: integer('end_ayat').notNull(),
+    amount: integer('amount').notNull(),
     memberId: uuid('member_id').notNull().references(() => member.id, { onDelete: 'cascade' }), // Add onDelete cascade here
     createdAt: timestamp('created_at').defaultNow().notNull(),
 });

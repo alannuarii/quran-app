@@ -1,13 +1,28 @@
 <script>
 	import { onMount } from 'svelte';
-	import quran from '../../../../lib/quran/quran.json';
-	import surah from '../../../../lib/quran/surah.json';
+	import quran from '$lib/quran/quran.json';
+	import surah from '$lib/quran/surah.json';
+	import SaveReading from '$lib/components/modals/SaveReading.svelte';
 	import InputPageNumber from '$lib/components/modals/InputPageNumber.svelte';
 
 	export let data;
 
 	const alQuran = quran.data;
 	const allSurah = surah.data;
+
+	const memberId = data?.memberId;
+	const juz = data?.juz[0].juz;
+	const lastRead = data?.lastRead[0];
+
+	let startDataTadarus = [];
+
+	if (lastRead) {
+		startDataTadarus = alQuran.find(
+			(item) => item.juz_id === lastRead.juz && item.aya_number === lastRead.ayat
+		);
+	} else {
+		startDataTadarus = alQuran.find((item) => item.juz_id === juz);
+	}
 
 	// Initialize the current page number
 	let currentPage = data.pageNumber;
@@ -68,10 +83,24 @@
 
 <section>
 	<div class="card shadow px-md-5 px-4 pt-4 rounded-5 mb-2">
-		<div class="juz mb-1">
+		<div class="juz mb-1 d-flex justify-content-between align-items-center">
+			<h5
+				class="text-mb-end text-center btn btn-sm btn-secondary"
+				data-bs-toggle="modal"
+				data-bs-target="#savereading"
+			>
+				<i class="bi-floppy me-2"></i>Simpan
+			</h5>
 			<h5 class="text-mb-end text-center">
 				<span class="badge text-bg-success">JUZ {juzId}</span>
 			</h5>
+			<SaveReading
+				{juzId}
+				{arraySurah}
+				numberPage={currentPage}
+				id={memberId}
+				startData={startDataTadarus}
+			/>
 		</div>
 		<!-- Use @html to render the HTML content -->
 		<p class="ayah-text">{@html itemsOnPage}</p>

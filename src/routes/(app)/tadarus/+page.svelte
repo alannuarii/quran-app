@@ -5,6 +5,7 @@
 
 	const plans = data?.plans;
 	const name = data?.name;
+
 </script>
 
 <section>
@@ -20,17 +21,17 @@
 	<hr />
 	{#each plans as plan}
 		<a
-			href="/tadarus/{plan.id}"
+			href="/tadarus/{plan.planId}"
 			class="card p-3 mb-1 btn btn-outline-success text-dark bg-light rounded-4"
 		>
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="text-center">
 					<p>Inisiator</p>
-					<h6>{plan.name}</h6>
+					<h6>{plan.planName}</h6>
 				</div>
 				<div class="text-center">
 					<p>Jumlah Anggota</p>
-					<h6>0/{plan.anggota}</h6>
+					<h6>{plan.membersCount}/{plan.members}</h6>
 				</div>
 				<div class="text-center">
 					<p>Target Khatam</p>

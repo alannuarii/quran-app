@@ -1,26 +1,55 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
-import { and, eq } from 'drizzle-orm';
+import { eq, and, desc, asc } from 'drizzle-orm';
 import * as table from '$lib/server/db/schema';
+import { parseJuzRange } from '../../../../lib/utils/helper'
 
 export const load = async ({ url, locals }) => {
     const id = url.pathname.replace('/tadarus/', '');
-    const name = locals?.user.name;
 
     try {
         // Query data dari tabel `plan` dan join dengan tabel `member`
-        const planWithMembers = await db
+        const jusz = await db
             .select({
-                plan: table.plan,
-                members: table.member,
-                tadarus: table.tadarus,
+                id: table.plan.id,
+                inisiator: table.plan.name,
+                targetKhatam: table.plan.targetKhatam,
+                anggota: table.plan.members,
+                member: table.member.name,
+                memberId: table.member.id,
+                juz: table.tadarus.juz,
             })
             .from(table.plan)
             .leftJoin(table.member, eq(table.member.planId, table.plan.id)) // Join dengan member
             .leftJoin(table.tadarus, eq(table.tadarus.memberId, table.member.id))
-            .where(eq(table.plan.id, id)); // Filter berdasarkan ID plan
+            .where(eq(table.plan.id, id))
+            .orderBy(asc(table.tadarus.juz))
 
-        return { plan: planWithMembers, name: name }; // Kembalikan hasil query
+        const progressTadarus = await db
+            .select({
+                id: table.member.id,
+                juz: table.progress.endJuz,
+                surah: table.progress.endSurah,
+                page: table.progress.endPage,
+                ayat: table.progress.endAyat,
+                amount: table.progress.amount
+            })
+            .from(table.plan)
+            .leftJoin(table.member, eq(table.member.planId, table.plan.id)) // Join dengan member
+            .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
+            .where(and(eq(table.plan.id, id), eq(table.member.name, locals.user.name)))
+            .orderBy(desc(table.progress.endAyat))
+
+        const amount = await db
+            .select({
+                amount: table.progress.amount
+            })
+            .from(table.plan)
+            .leftJoin(table.member, eq(table.member.planId, table.plan.id)) 
+            .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
+            .where(eq(table.plan.id, id))
+
+        return { plan: jusz, progress: progressTadarus, amount }; // Kembalikan hasil query
     } catch (error) {
         console.error('Error fetching data:', error);
         return fail(500, { message: error.message });
@@ -45,19 +74,27 @@ export const actions = {
         }
     },
     claim: async (event) => {
+        const formData = await event.request.formData();
+        const id = formData.get('id');
+        const juz = formData.get('juz');
 
-        const formData = await event.request.formData()
-        const id = formData.get('id')
-        const juz = formData.get('juz')
+        const arrayJuz = parseJuzRange(juz);
 
         try {
-            await db.insert(table.tadarus).values({ juz, memberId: id });
+            for (const item of arrayJuz) {
+                await db.insert(table.tadarus).values({ juz: item, memberId: id });
+            }
 
             return {
-                message: 'Data inserted successfully', status: 'OK'
+                message: 'Data inserted successfully',
+                status: 'OK'
             };
-        } catch (e) {
-            return fail(500, { message: e.message, status: 'Not OK' });
+        } catch (error) {
+            console.error('Error inserting data:', error);
+            return {
+                message: 'Error inserting data',
+                status: 'Not OK'
+            };
         }
     },
     deletePlan: async (event) => {

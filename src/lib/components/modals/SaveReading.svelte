@@ -4,6 +4,8 @@
 	export let juzId;
 	export let arraySurah;
 	export let numberPage;
+	export let id;
+	export let startData;
 
 	const allSurah = surah.data;
 </script>
@@ -29,8 +31,9 @@
 							class="form-control"
 							id="floatingID"
 							placeholder="ID Plan"
-							name="juz"
+							name="end_juz"
 							value={juzId}
+							required
 						/>
 						<label for="floatingInput">Juz</label>
 					</div>
@@ -39,6 +42,8 @@
 							class="form-select"
 							id="floatingSelect"
 							aria-label="Floating label select example"
+							name="end_surah"
+							required
 						>
 							{#each arraySurah as surah}
 								<option value={surah}>{allSurah[surah - 1].surat_name}</option>
@@ -52,8 +57,9 @@
 							class="form-control"
 							id="floatingID"
 							placeholder="ID Plan"
-							name="page_number"
+							name="end_page_number"
 							value={numberPage}
+							required
 						/>
 						<label for="floatingInput">Halaman</label>
 					</div>
@@ -63,12 +69,18 @@
 							class="form-control"
 							id="floatingID"
 							placeholder="ID Plan"
-							name="ayat"
+							name="end_ayat"
+							required
 						/>
 						<label for="floatingInput">Ayat</label>
 					</div>
 				</div>
 				<div class="modal-footer">
+					<input type="hidden" name="id" value={id} />
+					<input type="hidden" name="start_juz" value={startData.juz_id} />
+					<input type="hidden" name="start_surah" value={startData.sura_id} />
+					<input type="hidden" name="start_page_number" value={startData.page_number} />
+					<input type="hidden" name="start_ayat" value={startData.aya_number} />
 					<button type="submit" class="btn btn-success">Kirim</button>
 				</div>
 			</form>

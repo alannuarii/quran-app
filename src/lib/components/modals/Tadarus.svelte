@@ -50,7 +50,7 @@
 							class="form-select"
 							id="floatingSelect"
 							aria-label="Floating label select example"
-							name="anggota"
+							name="members"
 						>
 							<option selected disabled>Pilih jumlah anggota</option>
 
