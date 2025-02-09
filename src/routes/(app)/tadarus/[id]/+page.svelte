@@ -42,8 +42,6 @@
 	const totalProgress = data?.amount.reduce((sum, item) => sum + item.amount, 0);
 
 	const percenProgress = (totalProgress / 6236) * 100;
-
-	console.log(percenProgress);
 </script>
 
 <section>
@@ -95,6 +93,9 @@
 						<h6 class="fw-bolder">{Math.round(percenProgress)}%</h6>
 					</div>
 				</div>
+				<div class="text-center">
+					<button class="btn btn-sm btn-success">Progres Anggota</button>
+				</div>
 				<hr />
 				<div class="row">
 					<div class="col-md-4">
@@ -103,12 +104,12 @@
 					</div>
 					<div class="col-md-8 text-md-end list-btn mt-2 mt-md-0 mb-2 mb-md-0">
 						<a href="/tadarus/{plan.id}/{member.memberId}" class="btn btn-sm btn-secondary"
-							>Riwayat Tadarusku</a
+							>Bacaanku</a
 						>
-						<button class="btn btn-sm btn-secondary">Riwayat Anggota</button>
+						<a href="/tadarus/{plan.id}/members" class="btn btn-sm btn-secondary">Bacaan Anggota</a>
 						{#if plan.inisiator === name}
 							<button
-								class="btn btn-sm btn-danger"
+								class="btn btn-sm btn-danger ms-md-5 ms-2"
 								data-bs-toggle="modal"
 								data-bs-target="#deleteplan{plan.id}">Hapus</button
 							>

@@ -13,6 +13,7 @@
 		<div class="modal-content rounded-4">
 			<div class="modal-body text-center">
 				<p>Apakah Anda yakin?</p>
+				<p class="fst-italic">(Progres yang dihapus tidak dapat dikembalikan)</p>
 			</div>
 			<div class="modal-footer d-flex justify-content-center">
 				<form action="?/deletePlan" method="post">

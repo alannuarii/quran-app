@@ -6,7 +6,7 @@ import * as table from '$lib/server/db/schema';
 
 export const load = async ({ params }) => {
 
-    const id = params.riwayat
+    const id = params.history
 
     try {
         // Query data dari tabel `plan` dan join dengan tabel `member`

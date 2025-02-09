@@ -96,7 +96,7 @@
 			</h5>
 			<SaveReading
 				{juzId}
-				{arraySurah}
+				{suraId}
 				numberPage={currentPage}
 				id={memberId}
 				startData={startDataTadarus}

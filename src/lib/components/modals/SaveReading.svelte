@@ -2,7 +2,7 @@
 	import surah from '../../quran/surah.json';
 
 	export let juzId;
-	export let arraySurah;
+	export let suraId;
 	export let numberPage;
 	export let id;
 	export let startData;
@@ -33,23 +33,21 @@
 							placeholder="ID Plan"
 							name="end_juz"
 							value={juzId}
-							required
+							readonly
 						/>
 						<label for="floatingInput">Juz</label>
 					</div>
+					<input type="hidden" name="end_surah" value={suraId} />
 					<div class="form-floating mb-3">
-						<select
-							class="form-select"
-							id="floatingSelect"
-							aria-label="Floating label select example"
-							name="end_surah"
-							required
-						>
-							{#each arraySurah as surah}
-								<option value={surah}>{allSurah[surah - 1].surat_name}</option>
-							{/each}
-						</select>
-						<label for="floatingSelect">Surah</label>
+						<input
+							type="text"
+							class="form-control"
+							id="floatingID"
+							placeholder="ID Plan"
+							value={allSurah[suraId - 1].surat_name}
+							readonly
+						/>
+						<label for="floatingInput">Surah</label>
 					</div>
 					<div class="form-floating mb-3">
 						<input
@@ -59,7 +57,7 @@
 							placeholder="ID Plan"
 							name="end_page_number"
 							value={numberPage}
-							required
+							readonly
 						/>
 						<label for="floatingInput">Halaman</label>
 					</div>
