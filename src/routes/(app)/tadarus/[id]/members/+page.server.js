@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
-import { eq, asc } from 'drizzle-orm';
+import { eq, asc, and, isNotNull } from 'drizzle-orm';
 import * as table from '$lib/server/db/schema';
 
 
@@ -24,7 +24,7 @@ export const load = async ({ params }) => {
             .from(table.plan)
             .leftJoin(table.member, eq(table.member.planId, table.plan.id))
             .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
-            .where(eq(table.plan.id, id))
+            .where(and(eq(table.plan.id, id), isNotNull(table.progress.amount)))
 
         return { progress };
     } catch (error) {

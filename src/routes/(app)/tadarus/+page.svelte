@@ -4,8 +4,8 @@
 	export let data;
 
 	const plans = data?.plans;
-	const name = data?.name;
-
+	const names = data?.names
+	const name = data?.user.name;
 </script>
 
 <section>
@@ -20,25 +20,27 @@
 	</div>
 	<hr />
 	{#each plans as plan}
-		<a
-			href="/tadarus/{plan.planId}"
-			class="card p-3 mb-1 btn btn-outline-success text-dark bg-light rounded-4"
-		>
-			<div class="d-flex justify-content-between align-items-center">
-				<div class="text-center">
-					<p>Inisiator</p>
-					<h6>{plan.planName}</h6>
+		{#if plan.members !== plan.membersCount || names.find((item)=> item.planId === plan.planId && item.name === name)}
+			<a
+				href="/tadarus/{plan.planId}"
+				class="card p-3 mb-1 btn btn-outline-success text-dark bg-light rounded-4"
+			>
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="text-center">
+						<p>Inisiator</p>
+						<h6>{plan.planName}</h6>
+					</div>
+					<div class="text-center">
+						<p>Jumlah Anggota</p>
+						<h6>{plan.membersCount}/{plan.members}</h6>
+					</div>
+					<div class="text-center">
+						<p>Target Khatam</p>
+						<h6>{plan.targetKhatam}</h6>
+					</div>
 				</div>
-				<div class="text-center">
-					<p>Jumlah Anggota</p>
-					<h6>{plan.membersCount}/{plan.members}</h6>
-				</div>
-				<div class="text-center">
-					<p>Target Khatam</p>
-					<h6>{plan.targetKhatam}</h6>
-				</div>
-			</div>
-		</a>
+			</a>
+		{/if}
 	{/each}
 </section>
 

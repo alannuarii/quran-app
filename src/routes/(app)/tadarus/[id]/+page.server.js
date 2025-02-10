@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
-import { eq, and, desc, asc, sum} from 'drizzle-orm';
+import { eq, and, desc, asc, sum, isNotNull } from 'drizzle-orm';
 import * as table from '$lib/server/db/schema';
 import { parseJuzRange } from '../../../../lib/utils/helper'
 
@@ -9,7 +9,7 @@ export const load = async ({ url, locals }) => {
 
     try {
         // Query data dari tabel `plan` dan join dengan tabel `member`
-        const jusz = await db
+        const plan = await db
             .select({
                 id: table.plan.id,
                 inisiator: table.plan.name,
@@ -59,10 +59,11 @@ export const load = async ({ url, locals }) => {
             .leftJoin(table.member, eq(table.member.planId, table.plan.id))
             .leftJoin(table.tadarus, eq(table.tadarus.memberId, table.member.id))
             .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
-            .where(eq(table.plan.id, id))
+            .where(and(eq(table.plan.id, id), isNotNull(table.progress.amount)))
             .groupBy(table.member.name, table.tadarus.juz)
+            .orderBy(asc(table.tadarus.juz))
 
-        return { plan: jusz, progress: allProgress, amount, progressMembers }; // Kembalikan hasil query
+        return { plan: plan, progress: allProgress, amount, progressMembers }; // Kembalikan hasil query
     } catch (error) {
         console.error('Error fetching data:', error);
         return fail(500, { message: error.message });

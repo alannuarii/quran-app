@@ -109,10 +109,14 @@
 						<p>Inisiator <span class="fw-bold">{plan.inisiator}</span></p>
 					</div>
 					<div class="col-md-8 text-md-end list-btn mt-2 mt-md-0 mb-2 mb-md-0">
-						<a href="/tadarus/{plan.id}/{member.memberId}" class="btn btn-sm btn-secondary"
-							>Bacaanku</a
-						>
-						<a href="/tadarus/{plan.id}/members" class="btn btn-sm btn-secondary">Bacaan Anggota</a>
+						{#if page && tadarus[0].juz}
+							<a href="/tadarus/{plan.id}/{member.memberId}" class="btn btn-sm btn-secondary"
+								>Bacaanku</a
+							>
+							<a href="/tadarus/{plan.id}/members" class="btn btn-sm btn-secondary"
+								>Bacaan Anggota</a
+							>
+						{/if}
 						{#if plan.inisiator === name}
 							<button
 								class="btn btn-sm btn-danger ms-md-5 ms-2"
@@ -148,7 +152,12 @@
 				<h6 class="text-center fw-bold mb-3">Daftar Pembagian</h6>
 				<ul class="list-group list-group-flush">
 					{#each generateJuzRanges(distributeJuz(plan.anggota)) as juz}
-						{#if !juzs.includes(extractJuzNumbers(juz))}
+						{#if juzs.includes(extractJuzNumbers(juz)) && member.juz}
+							<li class="list-group-item d-flex justify-content-around align-items-center">
+								<p>{juz}</p>
+								<button class="btn btn-sm btn-secondary klaim" disabled><span>Klaim</span></button>
+							</li>
+						{:else if !member.juz && !juzs.includes(extractJuzNumbers(juz))}
 							<li class="list-group-item d-flex justify-content-around align-items-center">
 								<p>{juz}</p>
 								<button
@@ -157,13 +166,7 @@
 									data-bs-target="#claim{juz.replace(/\s+/g, '')}"><span>Klaim</span></button
 								>
 							</li>
-							<ClaimJuz id={member.memberId} {juz} />
-						{:else}
-							<li class="list-group-item d-flex justify-content-around align-items-center">
-								<p>{juz}</p>
-								<button class="btn btn-sm btn-secondary klaim" disabled><span>Klaim</span></button>
-							</li>
-						{/if}
+							<ClaimJuz id={member.memberId} {juz} />{/if}
 					{/each}
 				</ul>
 			</div>

@@ -5,11 +5,17 @@
 	export let data;
 
 	const progress = data?.progress;
+	const juz = data?.juz.map((item) => item.juz);
+	const firstJuz = juz[0];
+	const lastJuz = juz[juz.length - 1];
+
+	console.log(lastJuz);
 </script>
 
 <section>
-	<div>
-		<h4 class="fw-bold text-center">RIWAYAT BACAAN</h4>
+	<div class="text-center">
+		<h4 class="fw-bold">RIWAYAT BACAAN</h4>
+		<p class="juz badge bg-dark">Juz {firstJuz} - {lastJuz}</p>
 	</div>
 	<hr />
 	<!-- Mobile Version -->
@@ -68,7 +74,7 @@
 		font-size: 0.8rem;
 		font-style: italic;
 	}
-	h6 {
+	h6, h4 {
 		margin: 0px;
 	}
 	.badge {
@@ -77,5 +83,8 @@
 	th,
 	td {
 		font-size: 0.8rem;
+	}
+	.juz{
+		font-size: 1.2rem;
 	}
 </style>

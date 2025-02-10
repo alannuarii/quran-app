@@ -22,14 +22,16 @@
 			<div class="modal-body text-start">
 				<ol class="list-group list-group-numbered">
 					{#each progress as pr}
-						<li class="list-group-item d-flex justify-content-between align-items-start">
+						<li class="list-group-item d-flex justify-content-between align-items-start align-items-stretch">
 							<div class="ms-2 me-auto">
 								<div class="fw-bold">{pr.name}</div>
 								{pr.juz}
 							</div>
-							<span class="badge text-bg-success rounded-pill"
-								>{Math.round((pr.totalAmount / pr.totalAyat) * 100)} %</span
-							>
+							<div class="d-flex align-items-center">
+								<span class="badge text-success"
+									>{Math.round((pr.totalAmount / pr.totalAyat) * 100)}%</span
+								>
+							</div>
 						</li>
 					{/each}
 				</ol>
@@ -37,3 +39,10 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.badge {
+		font-size: larger;
+		font-weight: 800;
+	}
+</style>

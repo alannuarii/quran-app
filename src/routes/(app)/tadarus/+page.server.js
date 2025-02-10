@@ -25,8 +25,7 @@ import * as table from '$lib/server/db/schema';
 //     }
 // };
 
-export const load = async ({ locals }) => {
-    const name = locals?.user.name;
+export const load = async () => {
 
     try {
         // Query data dari tabel `plan` dan join dengan tabel `member`
@@ -36,14 +35,20 @@ export const load = async ({ locals }) => {
                 planName: table.plan.name,
                 members: table.plan.members,
                 targetKhatam: table.plan.targetKhatam,
-                // memberName: table.member.name,
                 membersCount: count(table.member.planId).as('membersCount'),
             })
             .from(table.plan)
             .leftJoin(table.member, eq(table.member.planId, table.plan.id))
             .groupBy(table.plan.id, table.plan.name, table.plan.members, table.plan.targetKhatam)
 
-        return { plans: plansWithMemberCount, name: name }; // Kembalikan hasil query
+        const memberNames = await db
+            .select({
+                name: table.member.name,
+                planId: table.member.planId
+            })
+            .from(table.member)
+
+        return { plans: plansWithMemberCount, names: memberNames }; // Kembalikan hasil query
     } catch (error) {
         console.error('Error fetching data:', error);
         return fail(500, { message: error.message });

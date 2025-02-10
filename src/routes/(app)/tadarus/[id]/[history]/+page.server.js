@@ -18,13 +18,21 @@ export const load = async ({ params }) => {
                 page: table.progress.endPage,
                 ayat: table.progress.endAyat,
                 amount: table.progress.amount,
-                time: table.progress.createdAt
+                time: table.progress.createdAt,
             })
             .from(table.progress)
             .where(eq(table.progress.memberId, id))
             .orderBy(asc(table.progress.createdAt))
 
-        return { progress };
+        const juz = await db
+            .select({
+                juz: table.tadarus.juz,
+            })
+            .from(table.tadarus)
+            .where(eq(table.tadarus.memberId, id))
+            .orderBy(asc(table.tadarus.juz))
+
+        return { progress, juz };
     } catch (error) {
         console.error('Error fetching data:', error);
         return fail(500, { message: error.message });
