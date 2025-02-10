@@ -1,4 +1,5 @@
 import surah from '../quran/surah.json'
+import { ayatPerSurah, ayatPerJuz } from '../quran/ayat'
 
 export const removeDuplicates = (array) => {
     // Create a Set from the array to automatically filter out duplicates  
@@ -81,22 +82,7 @@ export const surahName = (surahNumber) => {
     return findSurah.surat_name
 }
 
-const arraySurah = [
-    7, 286, 200, 176, 120, 165, 206, 75, 129, 109,
-    123, 111, 43, 52, 99, 128, 111, 110, 98, 135,
-    112, 78, 118, 64, 77, 227, 93, 88, 69, 60,
-    34, 30, 73, 54, 45, 83, 182, 88, 75, 85,
-    54, 53, 89, 59, 37, 35, 38, 29, 18, 45,
-    60, 49, 62, 55, 78, 96, 29, 22, 24, 13,
-    14, 11, 11, 18, 12, 12, 30, 52, 52, 44,
-    28, 28, 20, 56, 40, 31, 50, 40, 46, 42,
-    29, 19, 36, 25, 22, 17, 19, 26, 30, 20,
-    15, 21, 11, 8, 8, 19, 5, 8, 8, 11,
-    11, 8, 3, 9, 5, 4, 7, 3, 6, 3,
-    5, 4, 5, 6
-];
-
-export function countAmountAyat(surahAwal, ayatAwal, surahAkhir, ayatAkhir) {
+export const countAmountAyat = (surahAwal, ayatAwal, surahAkhir, ayatAkhir) => {
     let totalAyat = 0;
 
     // Jika surah awal dan akhir sama
@@ -104,11 +90,11 @@ export function countAmountAyat(surahAwal, ayatAwal, surahAkhir, ayatAkhir) {
         totalAyat = ayatAkhir - ayatAwal + 1;
     } else {
         // Hitung ayat dari ayat awal sampai akhir surah pertama
-        totalAyat += arraySurah[surahAwal - 1] - ayatAwal + 1;
+        totalAyat += ayatPerSurah[surahAwal - 1] - ayatAwal + 1;
 
         // Hitung ayat dari surah kedua sampai sebelum surah akhir
         for (let i = surahAwal; i < surahAkhir - 1; i++) {
-            totalAyat += arraySurah[i];
+            totalAyat += ayatPerSurah[i];
         }
 
         // Hitung ayat dari awal surah akhir sampai ayat akhir
@@ -116,4 +102,36 @@ export function countAmountAyat(surahAwal, ayatAwal, surahAkhir, ayatAkhir) {
     }
 
     return totalAyat;
+}
+
+export const transformJuzRange = (data) => {
+    // Mengelompokkan data berdasarkan nama
+    const groupedData = data.reduce((acc, item) => {
+        if (!acc[item.name]) {
+            acc[item.name] = {
+                name: item.name,
+                juz: [],
+                totalAmount: item.totalAmount,
+                totalAyat: 0
+            };
+        }
+        acc[item.name].juz.push(item.juz);
+        return acc;
+    }, {});
+
+    // Mengubah format dan menghitung totalAyat
+    const result = Object.values(groupedData).map(group => {
+        const minJuz = Math.min(...group.juz);
+        const maxJuz = Math.max(...group.juz);
+        const totalAyat = group.juz.reduce((sum, juz) => sum + ayatPerJuz[juz - 1], 0); // Menghitung total ayat
+
+        return {
+            name: group.name,
+            juz: `Juz ${minJuz} - ${maxJuz}`,
+            totalAmount: group.totalAmount, // Tidak dijumlahkan, hanya diambil dari item pertama
+            totalAyat: totalAyat
+        };
+    });
+
+    return result;
 }

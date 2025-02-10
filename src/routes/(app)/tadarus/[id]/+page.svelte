@@ -2,6 +2,7 @@
 	import Share from '$lib/components/modals/Share.svelte';
 	import DeletePlan from '$lib/components/modals/DeletePlan.svelte';
 	import ClaimJuz from '$lib/components/modals/ClaimJuz.svelte';
+	import Progress from '$lib/components/modals/Progress.svelte';
 	import quran from '../../../../lib/quran/quran.json';
 	import surah from '../../../../lib/quran/surah.json';
 	import {
@@ -42,6 +43,8 @@
 	const totalProgress = data?.amount.reduce((sum, item) => sum + item.amount, 0);
 
 	const percenProgress = (totalProgress / 6236) * 100;
+
+	const progressMembers = data?.progressMembers;
 </script>
 
 <section>
@@ -94,7 +97,10 @@
 					</div>
 				</div>
 				<div class="text-center">
-					<button class="btn btn-sm btn-success">Progres Anggota</button>
+					<button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#progress"
+						>Progres Anggota</button
+					>
+					<Progress {progressMembers} />
 				</div>
 				<hr />
 				<div class="row">

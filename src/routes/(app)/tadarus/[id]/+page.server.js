@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
-import { eq, and, desc, asc } from 'drizzle-orm';
+import { eq, and, desc, asc, sum} from 'drizzle-orm';
 import * as table from '$lib/server/db/schema';
 import { parseJuzRange } from '../../../../lib/utils/helper'
 
@@ -25,7 +25,7 @@ export const load = async ({ url, locals }) => {
             .where(eq(table.plan.id, id))
             .orderBy(asc(table.tadarus.juz))
 
-        const progressTadarus = await db
+        const allProgress = await db
             .select({
                 id: table.member.id,
                 juz: table.progress.endJuz,
@@ -45,11 +45,24 @@ export const load = async ({ url, locals }) => {
                 amount: table.progress.amount
             })
             .from(table.plan)
-            .leftJoin(table.member, eq(table.member.planId, table.plan.id)) 
+            .leftJoin(table.member, eq(table.member.planId, table.plan.id))
             .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
             .where(eq(table.plan.id, id))
 
-        return { plan: jusz, progress: progressTadarus, amount }; // Kembalikan hasil query
+        const progressMembers = await db
+            .select({
+                name: table.member.name,
+                juz: table.tadarus.juz,
+                totalAmount: sum(table.progress.amount)
+            })
+            .from(table.plan)
+            .leftJoin(table.member, eq(table.member.planId, table.plan.id))
+            .leftJoin(table.tadarus, eq(table.tadarus.memberId, table.member.id))
+            .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
+            .where(eq(table.plan.id, id))
+            .groupBy(table.member.name, table.tadarus.juz)
+
+        return { plan: jusz, progress: allProgress, amount, progressMembers }; // Kembalikan hasil query
     } catch (error) {
         console.error('Error fetching data:', error);
         return fail(500, { message: error.message });
