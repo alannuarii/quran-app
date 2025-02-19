@@ -1,6 +1,6 @@
 <script>
 	import Timer from '$lib/components/Timer.svelte';
-	import { surahName } from '../../lib/utils/helper';
+	import { surahName, transformJuzRange } from '../../lib/utils/helper';
 
 	export let data;
 
@@ -10,8 +10,6 @@
 
 	const latestData = Object.values(
 		tadarus.reduce((acc, item) => {
-			if (!item.createdAt) return acc; // Skip jika createdAt null
-
 			const id = item.idPlan;
 			if (!acc[id] || new Date(item.createdAt) > new Date(acc[id].createdAt)) {
 				acc[id] = item;
@@ -19,6 +17,20 @@
 			return acc;
 		}, {})
 	);
+
+	function splitByIdMember(data) {
+		const grouped = data.reduce((result, item) => {
+			if (!result[item.idMember]) {
+				result[item.idMember] = [];
+			}
+			result[item.idMember].push(item);
+			return result;
+		}, {});
+
+		return Object.values(grouped);
+	}
+
+	const splitProgress = splitByIdMember(data.progress);
 </script>
 
 <section>
@@ -33,35 +45,44 @@
 			<div class="card p-3 rounded-4">
 				<h5>Bacaan Terakhir</h5>
 				<div>
-					{#each latestData as tad}
-						<div class="card mb-2">
-							<h6 class="card-header">
-								<div class="form-floating">
-									<input
-										type="email"
-										class="form-control form-control-sm"
-										id="floatingInput"
-										placeholder="name@example.com"
-										value={tad.idPlan}
-										disabled
-									/>
-									<label for="floatingInput">ID Plan</label>
+					{#each latestData as tad, index}
+						{#if (transformJuzRange(splitProgress[index])[0].totalAmount / transformJuzRange(splitProgress[index])[0].totalAyat) * 100 !== 100}
+							<div class="card mb-2 border-3 rounded-4">
+								<h6 class="card-header">
+									<div class="form-floating">
+										<input
+											type="email"
+											class="form-control form-control-sm"
+											id="floatingInput"
+											placeholder="name@example.com"
+											value={tad.idPlan}
+											disabled
+										/>
+										<label for="floatingInput">ID Plan</label>
+									</div>
+								</h6>
+								<div class="card-body">
+									{#if tad.surah}
+										<div class="d-flex justify-content-evenly my-1">
+											<p class="fst-italic">Juz {tad.juz}</p>
+											<!-- Tampilkan nama Surah hanya di layar ≥ md -->
+											<p class="d-none d-md-block fst-italic">Surah {surahName(tad.surah)}</p>
+											<!-- Tampilkan ID Surah hanya di layar < md -->
+											<p class="d-md-none fst-italic">Surah {tad.surah}</p>
+											<p class="fst-italic">Ayat {tad.ayat}</p>
+										</div>
+										<div class="btn-group w-100">
+											<a href="/quran/member/{tad.idMember}/{tad.page}" class="btn btn-success"
+												>Lanjut</a
+											>
+											<a href="/tadarus/{tad.idPlan}" class="btn btn-secondary">Progres</a>
+										</div>
+									{:else}
+										<a href="/tadarus/{tad.idPlan}" class="btn btn-success w-100">Mulai Tadarus</a>
+									{/if}
 								</div>
-							</h6>
-							<div class="card-body">
-								<div class="d-flex justify-content-evenly my-1">
-									<p>Juz {tad.juz}</p>
-									<!-- Tampilkan nama Surah hanya di layar ≥ md -->
-									<p class="d-none d-md-block">Surah {surahName(tad.surah)}</p>
-									<!-- Tampilkan ID Surah hanya di layar < md -->
-									<p class="d-md-none">Surah {tad.surah}</p>
-									<p>Ayat {tad.ayat}</p>
-								</div>
-								<a href="/quran/member/{tad.idMember}/{tad.page}" class="btn btn-success w-100"
-									>Lanjut</a
-								>
 							</div>
-						</div>
+						{/if}
 					{/each}
 				</div>
 			</div>
@@ -82,6 +103,7 @@
 	h2 {
 		font-weight: 700;
 		margin: 0px;
+		color: #2a9d8f;
 	}
 	h6,
 	p,

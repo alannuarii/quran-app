@@ -4,6 +4,9 @@
 	export let progressMembers;
 
 	const progress = transformJuzRange(progressMembers);
+
+	// console.log(progressMembers)
+	// console.log(progress)
 </script>
 
 <div

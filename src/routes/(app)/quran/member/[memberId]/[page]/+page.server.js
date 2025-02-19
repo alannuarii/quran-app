@@ -18,7 +18,6 @@ export const load = async ({ params }) => {
             .from(table.tadarus)
             .where(eq(table.tadarus.memberId, memberId))
             .orderBy(asc(table.tadarus.juz))
-            .limit(1)
 
         const lastRead = await db
             .select({

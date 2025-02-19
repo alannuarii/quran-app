@@ -74,7 +74,8 @@
 		font-size: 0.8rem;
 		font-style: italic;
 	}
-	h6, h4 {
+	h6,
+	h4 {
 		margin: 0px;
 	}
 	.badge {
@@ -84,7 +85,7 @@
 	td {
 		font-size: 0.8rem;
 	}
-	.juz{
+	.juz {
 		font-size: 1.2rem;
 	}
 </style>

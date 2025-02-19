@@ -14,8 +14,13 @@
 	const juz = data?.juz[0].juz;
 	const lastRead = data?.lastRead[0];
 
-	let startDataTadarus = [];
+	const arrayJuz = data?.juz.map((item) => item.juz);
+	const firstJuz = arrayJuz[0];
+	const lastJuz = arrayJuz.at(-1);
+	const firstPageTadarus = alQuran.filter((item) => item.juz_id === firstJuz)[0].page_number;
+	const lastPageTadarus = alQuran.filter((item) => item.juz_id === lastJuz).at(-1).page_number;
 
+	let startDataTadarus = [];
 	if (lastRead) {
 		startDataTadarus = alQuran.find(
 			(item) => item.juz_id === lastRead.juz && item.aya_number === lastRead.ayat
@@ -24,14 +29,12 @@
 		startDataTadarus = alQuran.find((item) => item.juz_id === juz);
 	}
 
-	// Initialize the current page number
 	let currentPage = data.pageNumber;
 
 	const convertToArabicNumbers = (number) => {
 		return number.toString().replace(/\d/g, (digit) => '٠١٢٣٤٥٦٧٨٩'[digit]);
 	};
 
-	// Reactive statement to get verses for the current page
 	let itemsOnPage = '';
 	let suraId = '';
 	let arraySurah = [];
@@ -41,7 +44,6 @@
 		const versesOnCurrentPage = alQuran.filter((item) => item.page_number === currentPage);
 		itemsOnPage = versesOnCurrentPage
 			.map((item) => {
-				// Check if the aya_number is 1 and sura_id is greater than 1
 				if (item.aya_number === 1 && item.sura_id > 1) {
 					return `<div class="text-center mt-4"><h6 class="fw-bold">Surah ${allSurah[item.sura_id - 1].surat_name}</h6><hr></div><div class="text-center fw-bold text-success-emphasis">بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</div>${item.aya_text} (${convertToArabicNumbers(item.aya_number)})`;
 				} else if (item.aya_number === 1) {
@@ -51,33 +53,22 @@
 			})
 			.join(' ');
 
-		// Get sura_id and juz_id from the first verse of the current page
 		if (versesOnCurrentPage.length > 0) {
 			suraId = versesOnCurrentPage[0].sura_id;
 			juzId = versesOnCurrentPage[0].juz_id;
 
-			// Create a new array of unique sura_ids
 			const suraIds = versesOnCurrentPage.map((item) => item.sura_id);
 			const uniqueSuraIds = [...new Set(suraIds)];
-
-			// Assign the unique sura IDs to arraySurah
-			arraySurah = uniqueSuraIds; // This makes arraySurah reactive
+			arraySurah = uniqueSuraIds;
 		} else {
-			arraySurah = []; // Reset if no verses are found
+			arraySurah = [];
 		}
 	}
 
-	// Function to navigate to a different page
 	const navigateToPage = (newPageNumber) => {
-		if (newPageNumber > 0 && newPageNumber <= getMaxPageNumber()) {
-			currentPage = newPageNumber; // Update the current page
+		if (newPageNumber >= firstPageTadarus && newPageNumber <= lastPageTadarus) {
+			currentPage = newPageNumber;
 		}
-	};
-
-	// Function to get the maximum page number based on the data
-	const getMaxPageNumber = () => {
-		const maxPage = Math.max(...alQuran.map((item) => item.page_number));
-		return maxPage;
 	};
 </script>
 
@@ -103,20 +94,20 @@
 				{arraySurah}
 			/>
 		</div>
-		<!-- Use @html to render the HTML content -->
 		<p class="ayah-text">{@html itemsOnPage}</p>
 	</div>
 	<div class="d-flex justify-content-center">
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<li class="page-item">
+					<!-- Tombol Next -->
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<p
-						class="btn page-link rounded-0"
+						class="page-link btn rounded-0"
 						on:click={() => navigateToPage(currentPage + 1)}
-						disabled={currentPage <= 1}
-						aria-label="Previous"
+						disabled={currentPage >= lastPageTadarus}
+						aria-label="Next"
 					>
 						<span aria-hidden="true">&laquo;</span>
 					</p>
@@ -132,13 +123,14 @@
 					<InputPageNumber />
 				</li>
 				<li class="page-item">
-					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+					<!-- Tombol Previous -->
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<p
-						class="page-link btn rounded-0"
+						class="btn page-link rounded-0"
 						on:click={() => navigateToPage(currentPage - 1)}
-						disabled={currentPage >= getMaxPageNumber()}
-						aria-label="Next"
+						disabled={currentPage <= firstPageTadarus}
+						aria-label="Previous"
 					>
 						<span aria-hidden="true">&raquo;</span>
 					</p>
@@ -149,15 +141,14 @@
 </section>
 
 <style>
-	/* Tambahkan font dan pengaturan teks Arab */
 	.ayah-text {
-		font-family: 'Amiri', serif; /* Gunakan font Arab */
+		font-family: 'Amiri', serif;
 		font-size: 1.5rem;
-		direction: rtl; /* Teks dari kanan ke kiri */
+		direction: rtl;
 		text-align: right;
 		cursor: pointer;
-		line-height: 3; /* Menambahkan jarak antar baris untuk keterbacaan */
-		margin-bottom: 1.5rem; /* Menambahkan margin bawah untuk keterbacaan */
+		line-height: 3;
+		margin-bottom: 1.5rem;
 		font-weight: 500;
 	}
 	.juz {

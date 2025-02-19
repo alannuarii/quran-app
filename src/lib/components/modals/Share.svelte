@@ -14,7 +14,7 @@ Silahkan bergabung dengan kami melalui link berikut ini:
 ${url}`;
 
 	const copyToClipboard = () => {
-		navigator.clipboard.writeText(message).then(() => {
+		navigator.clipboard.writeText(url).then(() => {
 			showAlert = true;
 			buttonClass = 'btn-secondary';
 			buttonDisabled = true;

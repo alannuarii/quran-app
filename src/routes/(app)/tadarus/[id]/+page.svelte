@@ -88,7 +88,7 @@
 							aria-valuemax="6236"
 						>
 							<div
-								class="progress-bar progress-bar-striped bg-success"
+								class="progress-bar progress-bar-striped bg-secondary"
 								style="width: {percenProgress}%"
 							></div>
 						</div>
@@ -135,9 +135,9 @@
 							>Lanjut Tadarus</a
 						>
 						<div class="d-flex justify-content-evenly mt-1">
-							<p>Juz {lastRead.juz}</p>
-							<p>Surah {findSurah.surat_name}</p>
-							<p>Ayat {lastRead.ayat}</p>
+							<p class="fst-italic">Juz {lastRead.juz}</p>
+							<p class="fst-italic">Surah {findSurah.surat_name}</p>
+							<p class="fst-italic">Ayat {lastRead.ayat}</p>
 						</div>
 					</div>
 				{:else if tadarus[0].juz}
