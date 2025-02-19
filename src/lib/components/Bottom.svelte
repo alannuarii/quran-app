@@ -8,10 +8,6 @@
 			<i class="bi-list-task"></i>
 			<h6>Tadarus</h6>
 		</a>
-		<a href="/arsip" class="menu btn text-center">
-			<i class="bi-folder"></i>
-			<h6>Arsip</h6>
-		</a>
 		<a href="/quran" class="menu btn text-center">
 			<i class="bi-book"></i>
 			<h6>Quran</h6>

@@ -6,6 +6,7 @@ import { parseJuzRange } from '../../../../lib/utils/helper'
 
 export const load = async ({ url, locals }) => {
     const id = url.pathname.replace('/tadarus/', '');
+    const shareURL = url.href
 
     try {
         // Query data dari tabel `plan` dan join dengan tabel `member`
@@ -38,7 +39,7 @@ export const load = async ({ url, locals }) => {
             .leftJoin(table.member, eq(table.member.planId, table.plan.id)) // Join dengan member
             .leftJoin(table.progress, eq(table.progress.memberId, table.member.id))
             .where(and(eq(table.plan.id, id), eq(table.member.name, locals.user.name)))
-            .orderBy(desc(table.progress.endAyat))
+            .orderBy(desc(table.progress.createdAt))
 
         const amount = await db
             .select({
@@ -63,7 +64,7 @@ export const load = async ({ url, locals }) => {
             .groupBy(table.member.name, table.tadarus.juz)
             .orderBy(asc(table.tadarus.juz))
 
-        return { plan: plan, progress: allProgress, amount, progressMembers }; // Kembalikan hasil query
+        return { plan: plan, progress: allProgress, amount, progressMembers, url: shareURL }; // Kembalikan hasil query
     } catch (error) {
         console.error('Error fetching data:', error);
         return fail(500, { message: error.message });

@@ -100,6 +100,7 @@
 				numberPage={currentPage}
 				id={memberId}
 				startData={startDataTadarus}
+				{arraySurah}
 			/>
 		</div>
 		<!-- Use @html to render the HTML content -->

@@ -14,6 +14,7 @@
 
 	export let data;
 
+	const url = data?.url;
 	const name = data?.user.name;
 	const plan = data?.plan[0];
 	const members = data?.plan.map((item) => item.member);
@@ -71,7 +72,7 @@
 						data-bs-toggle="modal"
 						data-bs-target="#share{plan.id}">Invite Link</button
 					>
-					<Share id={plan.id} />
+					<Share id={plan.id} {url} />
 				</div>
 			</div>
 			<div class="border rounded-4 py-2 px-3 mb-3">

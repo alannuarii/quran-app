@@ -3,10 +3,11 @@
 	import quran from '../../quran/quran.json';
 
 	export let juzId;
-	export let suraId;
+	// export let suraId;
 	export let numberPage;
 	export let id;
 	export let startData;
+	export let arraySurah
 
 	const allSurah = surah.data;
 	const alQuran = quran.data;
@@ -66,8 +67,8 @@
 						/>
 						<label for="floatingInput">Juz</label>
 					</div>
-					<input type="hidden" name="end_surah" value={suraId} />
-					<div class="form-floating mb-3">
+					<!-- <input type="hidden" name="end_surah" value={suraId} /> -->
+					<!-- <div class="form-floating mb-3">
 						<input
 							type="text"
 							class="form-control"
@@ -76,6 +77,19 @@
 							readonly
 						/>
 						<label for="floatingInput">Surah</label>
+					</div> -->
+					<div class="form-floating mb-3">
+						<select
+							class="form-select"
+							id="floatingSelect"
+							aria-label="Floating label select example"
+							name="end_surah"
+						>
+							{#each arraySurah as surah}
+								<option value={surah}>{allSurah[surah - 1].surat_name}</option>
+							{/each}
+						</select>
+						<label for="floatingSelect">Surah</label>
 					</div>
 					<div class="form-floating mb-3">
 						<input

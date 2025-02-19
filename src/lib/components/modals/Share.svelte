@@ -2,12 +2,16 @@
 	import Alert from '../Alert.svelte';
 
 	export let id;
+	export let url;
 
 	let buttonClass = 'btn-success';
 	let buttonDisabled = false;
 	let showAlert = false;
 
-	const message = 'Selamat bergabung';
+	const message = `*Assalamualaikum Wr.Wb*,
+Silahkan bergabung dengan kami melalui link berikut ini:
+
+${url}`;
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(message).then(() => {
@@ -25,7 +29,7 @@
 	// Fungsi untuk membuka WhatsApp dengan pesan
 	const shareToWhatsApp = () => {
 		const whatsappURL = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-		window.open(whatsappURL, '_blank'); // Membuka URL di tab baru
+		window.open(whatsappURL, '_blank');
 	};
 </script>
 
@@ -54,7 +58,7 @@
 							class="form-control"
 							placeholder="First name"
 							aria-label="First name"
-							value={id}
+							value={url}
 							readonly
 						/>
 					</div>
@@ -76,9 +80,6 @@
 				<button class="btn btn-light border" on:click={() => shareToWhatsApp()}>
 					<i class="bi-whatsapp"></i>
 				</button>
-				<!-- Tombol Google -->
-				<!-- svelte-ignore a11y_consider_explicit_label -->
-				<button class="btn btn-light border"><i class="bi-google"></i></button>
 			</div>
 		</div>
 	</div>
