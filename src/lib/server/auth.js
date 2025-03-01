@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
-const JWT_SECRET = 'your_jwt_secret'; // Gunakan kunci rahasia yang kuat
+const JWT_SECRET = process.env.JWT_SECRET; // Gunakan kunci rahasia yang kuat
 const JWT_EXPIRATION = '30d'; // Masa berlaku token
 
 export const sessionCookieName = 'auth';
