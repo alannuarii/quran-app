@@ -18,7 +18,7 @@
 <style>
 	.navbar {
 		border-radius: 30px 30px 0 0;
-		border-top: solid 8px #2a9d8f !important;
+		border-top: solid 8px #6E6455 !important;
 	}
 	i {
 		font-size: 1.3em;

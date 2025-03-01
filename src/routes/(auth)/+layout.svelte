@@ -1,6 +1,6 @@
 <svelte:head>
-	<title>QURAN App</title>
-	<meta name="description" content="Project7" />
+	<title>QURAN</title>
+	<meta name="QURAN" content="QURAN" />
 </svelte:head>
 
 <main class="container-fluid d-flex justify-content-center align-items-center">

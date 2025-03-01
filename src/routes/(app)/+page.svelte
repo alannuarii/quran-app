@@ -103,7 +103,7 @@
 	h2 {
 		font-weight: 700;
 		margin: 0px;
-		color: #2a9d8f;
+		color: #6E6455;
 	}
 	h6,
 	p,
