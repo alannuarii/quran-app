@@ -42,7 +42,7 @@
 <style>
 	.card {
 		border-radius: 10px 10px 50px 50px;
-		border-bottom: solid 10px #2a9d8f !important;
+		border-bottom: solid 10px #6E6455 !important;
 	}
 	p {
 		margin: 0px;
