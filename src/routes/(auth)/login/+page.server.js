@@ -43,8 +43,14 @@ export const actions = {
         // Set cookie JWT
         auth.setJwtTokenCookie(event, token);
 
-        // Redirect ke halaman utama
-        throw redirect(302, '/');
+        // Ambil URL tujuan dari cookies
+        const redirectUrl = event.cookies.get('redirectUrl') || '/';
+
+        // Hapus URL tujuan dari cookies
+        event.cookies.delete('redirectUrl', { path: '/' });
+
+        // Redirect ke URL tujuan
+        throw redirect(302, decodeURIComponent(redirectUrl));
     }
 };
 

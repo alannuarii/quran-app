@@ -5,12 +5,12 @@ import { eq } from "drizzle-orm";
 import { generateUserId } from '../../../../lib/utils/random';
 import jwt from "jsonwebtoken";
 
-const CLIENT_ID = process.env.CLIENT_ID
-const CLIENT_SECRET = process.env.CLIENT_SECRET
-const REDIRECT_URI = process.env.REDIRECT_URI
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
 
 const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = "7d"; // Masa berlaku token
 
 export async function GET({ url, cookies }) {
@@ -72,8 +72,15 @@ export async function GET({ url, cookies }) {
         maxAge: 60 * 60 * 24 * 7, // 1 minggu
     });
 
+    // Ambil URL tujuan dari cookies
+    const redirectUrl = cookies.get('redirectUrl') || '/';
+
+    // Hapus URL tujuan dari cookies
+    cookies.delete('redirectUrl', { path: '/' });
+
+    // Redirect ke URL tujuan
     return new Response(null, {
         status: 302,
-        headers: { Location: "/" },
+        headers: { Location: decodeURIComponent(redirectUrl) },
     });
 }

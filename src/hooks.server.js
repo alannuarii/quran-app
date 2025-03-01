@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { redirect } from '@sveltejs/kit';
 
 const JWT_SECRET = process.env.JWT_SECRET; // Gunakan kunci rahasia yang kuat
 
@@ -21,7 +22,7 @@ export async function handle({ event, resolve }) {
             event.locals.user = null;
 
             // Hapus cookie jika token tidak valid
-            event.cookies.delete("auth");
+            event.cookies.delete("auth", { path: '/' });
         }
     } else {
         event.locals.user = null; // Jika tidak ada token, tidak ada data pengguna
@@ -34,18 +35,22 @@ export async function handle({ event, resolve }) {
         event.url.pathname !== "/register" &&
         !event.url.pathname.startsWith("/api/auth")
     ) {
-        return new Response(null, {
-            status: 302,
-            headers: { Location: "/login" },
+        // Simpan URL tujuan di cookies sebelum redirect ke login
+        const redirectUrl = event.url.pathname + event.url.search;
+        event.cookies.set('redirectUrl', redirectUrl, {
+            path: '/',
+            httpOnly: true,
+            secure: true,
+            maxAge: 60 * 5, // Simpan selama 5 menit
         });
+
+        // Redirect ke halaman login
+        throw redirect(302, '/login');
     }
 
     // Cegah pengguna yang sudah login mengakses halaman login dan register
     if (event.locals.user && (event.url.pathname === "/login" || event.url.pathname === "/register")) {
-        return new Response(null, {
-            status: 302,
-            headers: { Location: "/" }, // Arahkan ke halaman utama
-        });
+        throw redirect(302, '/'); // Arahkan ke halaman utama
     }
 
     return resolve(event);
