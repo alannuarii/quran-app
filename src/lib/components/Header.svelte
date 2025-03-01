@@ -12,7 +12,7 @@
 				height="24"
 				class="d-inline-block align-text-top"
 			/> -->
-			Jariyah App
+			QURAN App
 		</a>
 		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<button class="btn" data-bs-toggle="modal" data-bs-target="#profile"

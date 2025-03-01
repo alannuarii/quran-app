@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Jariyah App</title>
+	<title>QURAN App</title>
 	<meta name="description" content="Project7" />
 </svelte:head>
 
