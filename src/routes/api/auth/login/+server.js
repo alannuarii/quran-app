@@ -3,8 +3,7 @@ import { OAuth2Client } from "google-auth-library";
 // Ambil CLIENT_ID dan CLIENT_SECRET dari environment variables
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/auth/callback";
-
+const REDIRECT_URI = process.env.REDIRECT_URI
 // Pastikan variabel lingkungan sudah terisi
 if (!CLIENT_ID || !CLIENT_SECRET) {
   throw new Error("Missing CLIENT_ID or CLIENT_SECRET in environment variables");
