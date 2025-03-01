@@ -25,5 +25,8 @@ COPY . .
 # Build project SvelteKit
 RUN npm run build
 
+# Jalankan migrasi database (db:push)
+RUN npm run db:push
+
 # Jalankan aplikasi dari hasil build
 CMD ["node", "build"]
